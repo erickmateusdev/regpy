@@ -1,8 +1,8 @@
--- regpy
+# regpy
 
 Uma biblioteca leve, modular e eficiente desenvolvida em Python puro para regressão estatística e aprendizado de máquina, construída sem dependências externas (como NumPy ou SciPy).O objetivo da regpy é fornecer implementações limpas e didáticas de algoritmos de regressão, utilizando álgebra linear nativa com resolução de sistemas de equações via eliminação de Gauss-Jordan com pivoteamento parcial.
 
--- Sumário
+## Sumário
 
 - Destaques 
 - Instalação
@@ -12,16 +12,21 @@ Uma biblioteca leve, modular e eficiente desenvolvida em Python puro para regres
 - Roadmap
 - Licença
 
--- Destaques
+## Destaques
 
 - Zero Dependências de Terceiros: Todo o módulo de álgebra linear e manipulação de matrizes foi escrito do zero usando apenas bibliotecas padrão (math).
-- Resolução Estável de Sistemas Lineares: Implementação de Eliminação de Gauss-Jordan com pivoteamento parcial para cálculo exato dos coeficientes e do intercepto.Validação Rigorosa de Dados: Checagem de tipos numéricos reais, valores infinitos/NaN e consistência de dimensões nas matrizes de entrada.
+- Resolução Estável de Sistemas Lineares: Implementação de Eliminação de Gauss-Jordan com pivoteamento parcial para cálculo exato dos coeficientes e do intercepto.
+-Validação Rigorosa de Dados: Checagem de tipos numéricos reais, valores infinitos/NaN e consistência de dimensões nas matrizes de entrada.
 - Estrutura Moderna em Python: Organizado no formato src-layout com testes automatizados via pytest.
 
--- Instalação
-- Instalação Direta via Pip (GitHub)Você pode instalar a biblioteca diretamente do GitHub em qualquer ambiente Python rodando:pip install git+https://github.com/erickmateusdev/regpy.git
+# Instalação
 
--- Instalação para Desenvolvimento Local
+## Instalação Direta via Pip (GitHub)
+
+- Você pode instalar a biblioteca diretamente do GitHub em qualquer ambiente Python rodando:
+pip install git+https://github.com/erickmateusdev/regpy.git
+
+## Instalação para Desenvolvimento Local
 - Se você deseja clonar e contribuir com o projeto:
 
 # 1. Clone o repositório
@@ -32,7 +37,7 @@ cd regpy
 pip install -e .
 pip install pytest
 
--- Exemplo de Uso
+## Exemplo de Uso
 
 - Regressão Linear
 
@@ -65,7 +70,7 @@ previsoes = modelo.predict(novos_dados)
 print("Predições:", previsoes)
 
 
--- Estrutura do Projetoregpy/
+## Estrutura do Projeto regpy/
 
 ├── src/
 │   └── regpy/
@@ -80,7 +85,7 @@ print("Predições:", previsoes)
 └── README.md                    # Documentação do projeto
 
 
--- Executando os Testes
+## Executando os Testes
 
 A biblioteca conta com uma suíte de testes unitários para validar a precisão matemática e a robustez contra dados inválidos.
 Para rodar os testes:
@@ -91,4 +96,4 @@ Para uma saída mais detalhada:
 
 pytest -v
 
--- Licença: Este projeto está sob a licença MIT. Sinta-se livre para estudar, modificar e reutilizar o código.
+# Licença: Este projeto está sob a licença MIT. Sinta-se livre para estudar, modificar e reutilizar o código.
