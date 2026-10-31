@@ -1,7 +1,16 @@
-__pycache__/
-*.pyc
+# Testes e cobertura
+.coverage
+htmlcov/
 .pytest_cache/
+
+# Arquivos temporários
+.tmp.driveupload/
+
+# Python
+__pycache__/
+*.py[cod]
 *.egg-info/
-dist/
-build/
+
+# Ambientes virtuais
 .venv/
+venv/
