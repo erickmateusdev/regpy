@@ -1,24 +1,24 @@
 import math
 from numbers import Real
 
-class Regressao_Linear:
+class Linear_regression:
     def __init__(self):
-        self.coeficientes = []
+        self.coefficients = []
         self.intercept = 0.0
         self.n_features = 0
         self._fitted = False
 
     def fit(self, X, y):
         self._fitted = False
-        self.coeficientes = []
+        self.coefficients = []
         self.intercept = 0.0
         self.n_features = 0
 
         X = self._validate_matrix(X, "X")
         if not y:
-            raise ValueError("y precisa conter pelo menos um valor.")
+            raise ValueError("Y must contain at least one value.")
         if len(X) != len(y):
-            raise ValueError("X e y precisam conter o mesmo numero de amostras.")
+            raise ValueError("X and y must contain the same number of samples.")
         y = [self._validate_number(value, "y") for value in y]
 
         self.n_features = len(X[0])
@@ -39,7 +39,14 @@ class Regressao_Linear:
             for i in range(n_parameters)
         ]
 
+        if not all(math.isfinite(value) for row in matrix for value in row) or not all(
+            math.isfinite(value) for value in target
+        ):
+            raise ValueError("Model calculations must produce finite values.")
+
         parameters = self._solve(matrix, target)
+        if not all(math.isfinite(value) for value in parameters):
+            raise ValueError("Model parameters must be finite.")
         self.intercept = parameters[0]
         self.coeficientes = parameters[1:]
         self._fitted = True
@@ -48,38 +55,38 @@ class Regressao_Linear:
     @staticmethod
     def _validate_number(value, name):
         if isinstance(value, bool) or not isinstance(value, Real):
-            raise TypeError(f"Todos os valores de {name} precisam ser numericos.")
+            raise TypeError(f"All values of {name} must be numeric.")
         try:
             number = float(value)
         except OverflowError as error:
-            raise ValueError(f"Os valores de {name} precisam ser finitos.") from error
+            raise ValueError(f"Values of {name} must be finite.") from error
         if not math.isfinite(number):
-            raise ValueError(f"Os valores de {name} precisam ser finitos.")
+            raise ValueError(f"Values of {name} must be finite.")
         return number
 
     @classmethod
     def _validate_matrix(cls, values, name, expected_features=None):
         if not values:
-            raise ValueError(f"{name} precisa conter pelo menos uma amostra.")
+            raise ValueError(f"{name} must contain at least one sample.")
 
         matrix = []
         for row in values:
             try:
                 feature_count = len(row)
             except TypeError as error:
-                raise TypeError(f"Cada amostra de {name} precisa ser uma lista de valores.") from error
+                raise TypeError(f"Each sample of {name} must be a list of values.") from error
 
             if feature_count == 0:
-                raise ValueError(f"Cada amostra de {name} precisa conter pelo menos uma variavel.")
+                raise ValueError(f"Each sample of {name} must contain at least one feature.")
             if expected_features is not None and feature_count != expected_features:
                 raise ValueError(
-                    f"Cada amostra de {name} precisa ter {expected_features} variaveis."
+                    f"Each sample of {name} must have {expected_features} features."
                 )
 
             matrix.append([cls._validate_number(value, name) for value in row])
 
         if expected_features is None and any(len(row) != len(matrix[0]) for row in matrix):
-            raise ValueError(f"Todas as amostras de {name} precisam ter o mesmo numero de variaveis.")
+            raise ValueError(f"All samples of {name} must have the same number of features.")
         return matrix
 
     @staticmethod
@@ -91,8 +98,7 @@ class Regressao_Linear:
             pivot = max(range(column, size), key=lambda row: abs(augmented[row][column]))
             if augmented[pivot][column] == 0:
                 raise ValueError(
-                    "Nao foi possivel ajustar o modelo: variaveis redundantes "
-                    "ou amostras insuficientes."
+                    "Could not fit the model: redundant variables or insufficient samples."
                 )
 
             augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
@@ -112,7 +118,7 @@ class Regressao_Linear:
 
     def predict(self, X):
         if not self._fitted:
-            raise ValueError("O modelo precisa ser ajustado com fit() antes de predict().")
+            raise ValueError("The model needs to be fitted with fit() before predict().")
         X = self._validate_matrix(X, "X", self.n_features)
 
         return [

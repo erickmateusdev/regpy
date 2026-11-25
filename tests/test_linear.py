@@ -1,7 +1,7 @@
-from regpy.models.linear import Regressao_Linear
+from regpy.models.linear import Linear_regression
 import pytest
 
-def test_predict_com_infinito():
+def test_predict_with_infinity():
     X = [
         [1],
         [2],
@@ -11,7 +11,7 @@ def test_predict_com_infinito():
 
     y = [5, 7, 9, 11]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     valores = [
@@ -23,7 +23,7 @@ def test_predict_com_infinito():
         with pytest.raises(ValueError):
             modelo.predict([[valor]])
 
-def test_predict_com_nan():
+def test_predict_with_nan():
     X = [
         [1],
         [2],
@@ -33,13 +33,13 @@ def test_predict_com_nan():
 
     y = [5, 7, 9, 11]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     with pytest.raises(ValueError):
         modelo.predict([[float("nan")]])
 
-def test_ortogonalidade_residuos_regressao_multipla():
+def test_residual_orthogonality_multiple_regression():
     X = [
         [1, 1],
         [2, 1],
@@ -50,7 +50,7 @@ def test_ortogonalidade_residuos_regressao_multipla():
 
     y = [10, 12, 13, 17, 22]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict(X)
@@ -68,7 +68,7 @@ def test_ortogonalidade_residuos_regressao_multipla():
 
         assert abs(soma_produtos) < 1e-10
 
-def test_ortogonalidade_dos_residuos():
+def test_residual_orthogonality():
     X = [
         [1],
         [2],
@@ -79,7 +79,7 @@ def test_ortogonalidade_dos_residuos():
 
     y = [8, 11, 15, 16, 21]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict(X)
@@ -96,7 +96,7 @@ def test_ortogonalidade_dos_residuos():
 
     assert abs(soma_produtos) < 1e-10
 
-def test_soma_dos_residuos():
+def test_residual_sum():
     X = [
         [1],
         [2],
@@ -107,7 +107,7 @@ def test_soma_dos_residuos():
 
     y = [8, 11, 15, 16, 21]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict(X)
@@ -121,7 +121,7 @@ def test_soma_dos_residuos():
 
     assert abs(soma_residuos) < 1e-10
 
-def test_amostra_sem_variaveis():
+def test_sample_without_features():
     X = [
         [1, 2],
         [],
@@ -130,12 +130,12 @@ def test_amostra_sem_variaveis():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_amostra_nao_iteravel():
+def test_sample_not_iterable():
     X = [
         [1, 2],
         3,
@@ -144,12 +144,12 @@ def test_amostra_nao_iteravel():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(TypeError):
         modelo.fit(X, y)
 
-def test_numero_com_overflow():
+def test_number_overflow():
     X = [
         [1],
         [10**10000],
@@ -158,12 +158,12 @@ def test_numero_com_overflow():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_y_com_valores_nao_finitos():
+def test_y_with_non_finite_values():
     valores = [
         float("nan"),
         float("inf"),
@@ -179,12 +179,12 @@ def test_y_com_valores_nao_finitos():
 
         y = [10, valor, 30]
 
-        modelo = Regressao_Linear()
+        modelo = Linear_regression()
 
         with pytest.raises(ValueError):
             modelo.fit(X, y)
 
-def test_y_com_valores_nao_numericos():
+def test_y_with_non_numeric_values():
     X = [
         [1],
         [2],
@@ -193,12 +193,12 @@ def test_y_com_valores_nao_numericos():
 
     y = [10, "abc", 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(TypeError):
         modelo.fit(X, y)
 
-def test_multiplas_previsoes():
+def test_multiple_predictions():
     X = [
         [1],
         [2],
@@ -208,7 +208,7 @@ def test_multiplas_previsoes():
 
     y = [5, 7, 9, 11]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([
@@ -225,7 +225,7 @@ def test_multiplas_previsoes():
     for previsao, esperado in zip(previsoes, esperados):
         assert abs(previsao - esperado) < 1e-10
 
-def test_regressao_com_valores_extremos():
+def test_regression_with_extreme_values():
     X = [
         [100000],
         [200000],
@@ -235,7 +235,7 @@ def test_regressao_com_valores_extremos():
 
     y = [200010, 400010, 600010, 800010]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([[500000]])
@@ -244,7 +244,7 @@ def test_regressao_com_valores_extremos():
     assert abs(modelo.coeficientes[0] - 2) < 1e-10
     assert abs(previsoes[0] - 1000010) < 1e-6
 
-def test_regressao_com_duas_observacoes():
+def test_regression_with_two_observations():
     X = [
         [1],
         [2]
@@ -252,7 +252,7 @@ def test_regressao_com_duas_observacoes():
 
     y = [7, 9]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([[3]])
@@ -261,7 +261,7 @@ def test_regressao_com_duas_observacoes():
     assert abs(modelo.coeficientes[0] - 2) < 1e-10
     assert abs(previsoes[0] - 11) < 1e-10
 
-def test_regressao_com_valores_negativos():
+def test_regression_with_negative_values():
     X = [
         [-3],
         [-2],
@@ -272,7 +272,7 @@ def test_regressao_com_valores_negativos():
 
     y = [11, 8, 5, 2, -1]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([[-4], [2]])
@@ -283,7 +283,7 @@ def test_regressao_com_valores_negativos():
     assert abs(previsoes[0] - 14) < 1e-10
     assert abs(previsoes[1] - (-4)) < 1e-10
 
-def test_regressao_linear_simples():
+def test_simple_linear_regression():
     X = [
         [1],
         [2],
@@ -294,7 +294,7 @@ def test_regressao_linear_simples():
 
     y = [7, 10, 13, 16, 19]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([[6], [7]])
@@ -305,7 +305,7 @@ def test_regressao_linear_simples():
     assert abs(previsoes[0] - 22) < 1e-10
     assert abs(previsoes[1] - 25) < 1e-10
 
-def test_variavel_constante():
+def test_constant_feature():
     X = [
         [5, 1],
         [5, 2],
@@ -315,12 +315,12 @@ def test_variavel_constante():
 
     y = [10, 15, 20, 25]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_matriz_singular():
+def test_singular_matrix():
     X = [
         [1, 2],
         [2, 4],
@@ -330,12 +330,12 @@ def test_matriz_singular():
 
     y = [10, 20, 30, 40]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_predict_dimensoes_incompativeis():
+def test_predict_incompatible_dimensions():
     X = [
         [1, 2],
         [2, 3],
@@ -345,13 +345,13 @@ def test_predict_dimensoes_incompativeis():
 
     y = [10, 15, 20, 25]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     with pytest.raises(ValueError):
         modelo.predict([[1, 2, 3]])
 
-def test_vetor_y_vazio():
+def test_empty_y_vector():
     X = [
         [1, 2],
         [2, 3],
@@ -360,21 +360,21 @@ def test_vetor_y_vazio():
 
     y = []
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_matriz_vazia():
+def test_empty_matrix():
     X = []
     y = []
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_valores_infinitos():
+def test_infinite_values():
     valores = [
         float("inf"),
         float("-inf")
@@ -389,13 +389,13 @@ def test_valores_infinitos():
 
         y = [10, 20, 30]
 
-        modelo = Regressao_Linear()
+        modelo = Linear_regression()
 
         with pytest.raises(ValueError):
             modelo.fit(X, y)
 
 
-def test_valores_booleanos():
+def test_boolean_values():
     X = [
         [1, 2],
         [2, True],
@@ -404,12 +404,12 @@ def test_valores_booleanos():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(TypeError):
         modelo.fit(X, y)
 
-def test_valores_nan():
+def test_nan_values():
     X = [
         [1, 2],
         [2, float("nan")],
@@ -418,12 +418,12 @@ def test_valores_nan():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_valores_nao_numericos():
+def test_non_numeric_values():
     X = [
         [1, 2],
         [2, "abc"],
@@ -432,12 +432,12 @@ def test_valores_nao_numericos():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(TypeError):
         modelo.fit(X, y)
 
-def test_matriz_irregular():
+def test_irregular_matrix():
     X = [
         [1, 2],
         [2, 3],
@@ -446,12 +446,12 @@ def test_matriz_irregular():
 
     y = [10, 20, 30]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_dimensoes_incompativeis():
+def test_incompatible_dimensions():
     X = [
         [1, 2],
         [2, 3],
@@ -460,18 +460,18 @@ def test_dimensoes_incompativeis():
 
     y = [10, 20]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.fit(X, y)
 
-def test_predict_sem_treinamento():
-    modelo = Regressao_Linear()
+def test_predict_before_training():
+    modelo = Linear_regression()
 
     with pytest.raises(ValueError):
         modelo.predict([[1, 2]])
 
-def test_regressao_linear_multipla():
+def test_multiple_linear_regression():
     X = [
         [1, 1],
         [2, 1],
@@ -482,7 +482,7 @@ def test_regressao_linear_multipla():
 
     y = [10, 12, 13, 17, 22]
 
-    modelo = Regressao_Linear()
+    modelo = Linear_regression()
     modelo.fit(X, y)
 
     previsoes = modelo.predict([[6, 1], [10, 3]])
@@ -493,3 +493,48 @@ def test_regressao_linear_multipla():
 
     assert abs(previsoes[0] - 20) < 1e-10
     assert abs(previsoes[1] - 34) < 1e-10
+
+def test_refit_updates_model_parameters():
+    modelo = Linear_regression()
+    modelo.fit([[1], [2], [3]], [3, 5, 7])
+
+    modelo.fit([[1], [2], [3]], [10, 7, 4])
+
+    assert modelo.intercept == pytest.approx(13)
+    assert modelo.coeficientes == pytest.approx([-3])
+    assert modelo.predict([[4]]) == pytest.approx([1])
+
+def test_failed_refit_invalidates_previous_model():
+    modelo = Linear_regression()
+    modelo.fit([[1], [2], [3]], [3, 5, 7])
+
+    with pytest.raises(ValueError):
+        modelo.fit([[1, 2], [2, 4], [3, 6]], [3, 6, 9])
+
+    with pytest.raises(ValueError, match="needs to be fitted"):
+        modelo.predict([[4]])
+
+def test_predict_with_empty_matrix():
+    modelo = Linear_regression()
+    modelo.fit([[1], [2], [3]], [3, 5, 7])
+
+    with pytest.raises(ValueError, match="at least one sample"):
+        modelo.predict([])
+
+def test_predict_with_irregular_matrix():
+    modelo = Linear_regression()
+    modelo.fit([[1], [2], [3]], [3, 5, 7])
+
+    with pytest.raises(ValueError, match="must have 1 features"):
+        modelo.predict([[1], [2, 3]])
+
+@pytest.mark.parametrize(
+    ("X", "y"),
+    [
+        ([[1e308], [5e307], [2.5e307]], [3, 2, 1]),
+        ([[1], [2], [3]], [1e308, 0, -1e308]),
+    ],
+)
+def test_fit_rejects_non_finite_intermediate_values(X, y):
+    with pytest.raises(ValueError, match="finite"):
+        Linear_regression().fit(X, y)

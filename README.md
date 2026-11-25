@@ -1,81 +1,81 @@
 # regpy
 
-Uma biblioteca leve, modular e eficiente desenvolvida em Python puro para **regressão estatística e aprendizado de máquina**.
+A lightweight, modular, and efficient library developed in pure Python for **statistical regression and machine learning**.
 
-A `regpy` está sendo construída sem dependências externas como NumPy ou SciPy, com o objetivo de implementar os algoritmos de regressão a partir de seus fundamentos matemáticos.
+`regpy` is being built without external dependencies such as NumPy or SciPy, with the goal of implementing regression algorithms from their mathematical foundations.
 
-A biblioteca utiliza álgebra linear implementada internamente, incluindo resolução de sistemas de equações por **eliminação de Gauss-Jordan com pivoteamento parcial**.
+The library uses internally implemented linear algebra, including solving systems of equations through **Gauss-Jordan elimination with partial pivoting**.
 
-> **Status:** projeto em desenvolvimento 🚧
-
----
-
-## Sumário
-
-* [Destaques](#destaques)
-* [Instalação](#instalação)
-* [Exemplo de Uso](#exemplo-de-uso)
-* [Estrutura do Projeto](#estrutura-do-projeto)
-* [Executando os Testes](#executando-os-testes)
-* [Licença](#licença)
+> **Status:** project under development 🚧
 
 ---
 
-## Destaques
+## Table of Contents
 
-* **Zero dependências de terceiros:** o núcleo matemático é implementado utilizando apenas a biblioteca padrão do Python.
-* **Álgebra linear própria:** operações necessárias para os modelos são desenvolvidas internamente.
-* **Resolução de sistemas lineares:** implementação de eliminação de Gauss-Jordan com pivoteamento parcial.
-* **Validação de dados:** verificação de tipos numéricos, valores infinitos, `NaN` e consistência das dimensões das matrizes.
-* **Estrutura moderna em Python:** organização utilizando `src-layout`.
-* **Testes automatizados:** utilização do `pytest` para verificar o comportamento dos modelos.
-* **Arquitetura modular:** novos modelos de regressão podem ser adicionados sem comprometer os modelos existentes.
+* [Highlights](#highlights)
+* [Installation](#installation)
+* [Usage Example](#usage-example)
+* [Project Structure](#project-structure)
+* [Running the Tests](#running-the-tests)
+* [License](#license)
 
 ---
 
-## Instalação
+## Highlights
 
-### Instalação diretamente pelo GitHub
+* **Zero third-party dependencies:** the mathematical core uses only the Python standard library.
+* **In-house linear algebra:** operations required by the models are implemented internally.
+* **Linear system solver:** implementation of Gauss-Jordan elimination with partial pivoting.
+* **Data validation:** checks numeric types, infinite values, `NaN`, and matrix dimension consistency.
+* **Modern Python structure:** organized using the `src-layout`.
+* **Automated tests:** `pytest` is used to verify model behavior.
+* **Modular architecture:** new regression models can be added without affecting existing models.
 
-A biblioteca pode ser instalada diretamente do repositório:
+---
+
+## Installation
+
+### Install directly from GitHub
+
+The library can be installed directly from the repository:
 
 ```bash
 pip install git+https://github.com/erickmateusdev/regpy.git
 ```
 
-### Instalação para desenvolvimento local
+### Install for local development
 
-Clone o repositório:
+Clone the repository:
 
 ```bash
 git clone https://github.com/erickmateusdev/regpy.git
 cd regpy
 ```
 
-Instale o pacote em modo editável:
+Install the package in editable mode:
 
 ```bash
 pip install -e .
 ```
 
-Para instalar o `pytest`:
+To install `pytest`:
 
 ```bash
 pip install pytest
 ```
 
-O modo editável (`-e`) permite que alterações feitas no código-fonte sejam refletidas imediatamente no ambiente de desenvolvimento, sem precisar reinstalar o pacote.
+Editable mode (`-e`) allows changes to the source code to be reflected immediately in the development environment without reinstalling the package.
 
 ---
 
-## Exemplo de Uso
+## Usage Example
 
-### Regressão Linear Múltipla
+### Multiple Linear Regression
 
 ```python
-from regpy.models.linear import Regressao_Linear
+from regpy.models.linear import Linear_regression
 
-# Matriz de variáveis independentes (X)
+# Independent variable matrix (X)
 X = [
     [1.0, 1.0],
     [2.0, 1.0],
@@ -84,44 +84,43 @@ X = [
     [4.0, 3.0]
 ]
 
-# Vetor da variável dependente (y)
+# Dependent variable vector (y)
 y = [10.0, 12.0, 13.0, 17.0, 22.0]
 
-# Instanciação e treinamento do modelo
-modelo = Regressao_Linear()
+# Create and train the model
+model = Linear_regression()
+model.fit(X, y)
 
-modelo.fit(X, y)
+# Learned parameters
+print("Intercept:", model.intercept)
+print("Coefficients:", model.coeficientes)
 
-# Parâmetros aprendidos
-print("Intercepto:", modelo.intercept)
-print("Coeficientes:", modelo.coeficientes)
-
-# Novos dados para predição
-novos_dados = [
+# New data for prediction
+new_data = [
     [6.0, 1.0],
     [10.0, 3.0]
 ]
 
-previsoes = modelo.predict(novos_dados)
+predictions = model.predict(new_data)
 
-print("Predições:", previsoes)
+print("Predictions:", predictions)
 ```
 
-O modelo estima uma equação do tipo:
+The model estimates an equation of the form:
 
 $$
 \hat{y} = \beta_0 + \beta_1x_1 + \beta_2x_2 + \cdots + \beta_nx_n
 $$
 
-onde:
+where:
 
-* `β₀` é o intercepto;
-* `β₁, β₂, ..., βₙ` são os coeficientes das variáveis independentes;
-* `x₁, x₂, ..., xₙ` são as variáveis utilizadas como entrada.
+* `β₀` is the intercept;
+* `β₁, β₂, ..., βₙ` are the coefficients of the independent variables;
+* `x₁, x₂, ..., xₙ` are the input variables.
 
 ---
 
-## Estrutura do Projeto
+## Project Structure
 
 ```text
 regpy/
@@ -142,40 +141,40 @@ regpy/
     └── test_linear.py
 ```
 
-A estrutura utiliza o padrão **`src-layout`**, separando o código da biblioteca dos testes e dos arquivos de configuração do projeto.
+The project uses the **`src-layout`** pattern, separating the library code from tests and project configuration files.
 
 ---
 
-## Executando os Testes
+## Running the Tests
 
-A biblioteca possui testes automatizados para verificar tanto a precisão matemática dos modelos quanto o comportamento diante de entradas inválidas.
+The library includes automated tests to verify both the mathematical accuracy of the models and their behavior with invalid input.
 
-Para executar todos os testes:
+To run all tests:
 
 ```bash
 python -m pytest
 ```
 
-Para obter uma saída mais detalhada:
+For more detailed output:
 
 ```bash
 python -m pytest -v
 ```
 
-Exemplo de resultado:
+Example output:
 
 ```text
-collected 1 item
+collected 34 items
 
-tests/test_linear.py .    [100%]
+tests/test_linear.py .................................. [100%]
 
-1 passed
+34 passed
 ```
 
 ---
 
-## Licença
+## License
 
-Este projeto está disponível sob a **Licença MIT**.
+This project is available under the **MIT License**.
 
-Você pode estudar, modificar e reutilizar o código de acordo com os termos da licença.
+You may study, modify, and reuse the code according to the terms of the license.

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "regpy"
 version = "0.0.1"
-description = "Biblioteca de modelos de regressao estatistica"
+description = "Library of statistical regression models"
 requires-python = ">=3.10"
 
 [tool.setuptools.packages.find]
